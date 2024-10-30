@@ -1,0 +1,39 @@
+<% layout("/layout/boilerplate.ejs") %>
+<body>
+    <h2>Edit your Details</h2>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form action="/listing/<%=lists.id %>?_method=PUT" method="post" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label for="title" class="form-label fw-medium">Title</label>
+                    <input type="text" name="listing[title]"  value="<%=lists.title %>" class="form-control" id="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-medium">Description</label>
+                    <input type="text" name="listing[description]" value="<%=lists.description %>" class="form-control" id="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label fw-medium">Image Url</label>
+                    <input type="text" name="listing[image]" value="<%=lists.image %>" class="form-control" id="image" required> 
+                </div>
+               <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label fw-medium">Price</label>
+                    <input type="number" name="listing[price]" value="<%=lists.price %>" class="form-control" id="price" required>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label fw-medium">Country</label>
+                    <input type="text" name="listing[country]" value="<%=lists.country %>" class="form-control" id="country" required>
+                </div>
+               </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label fw-medium">Location</label>
+                    <input type="text" name="listing[location]" value="<%=lists.location %>" class="form-control" id="location" required>
+                </div>
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    
+</body>
