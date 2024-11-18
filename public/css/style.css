@@ -62,7 +62,7 @@ body{
 
 /* Cards */
 
-.card{
+.listing-card{
     border: none !important;
     padding: 0px !important;
 }
