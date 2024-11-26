@@ -7,6 +7,10 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session=require("express-session");
 const flash=require("connect-flash");
+const passport=require("passport");
+const LocalStrategy = require("passport-local");
+const User=require("./models/user");
+
 
 const Listing = require("./models/listing");
 const ExpressError = require("./utils/ExpressError");
@@ -14,8 +18,10 @@ const wrapAsync = require("./utils/wrapAsync");
 const { ListingSchema, reviewSchema} = require("./schema");
 const Review = require("./models/review");
 
-const listing=require("./router/listingg");
-const reviews=require("./router/review");
+const listingRoute=require("./router/listingg");
+const reviewsRoute=require("./router/review");
+const userRoute=require("./router/user");
+
 const sessionopt={
     secret : "mysupersecretstring",
     resave : false,
@@ -37,9 +43,16 @@ app.engine("ejs", ejsMate);
 app.use(session(sessionopt));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
+    res.locals.currUser=req.user;
     next();
 })
 
@@ -82,10 +95,20 @@ app.get('/', (req, res) => {
 // })
 
 
+//demo user
+// app.get("/demo",async (req,res)=>{
+//     let fakeuser={
+//         email : "demo1@gmail.com",
+//         username : "demogod1"
+//     };
+//     let reguser= await User.register(fakeuser,"demodemo");
+//     res.send(reguser);
+// });
 
 
-app.use("/listing",listing);
-app.use("/listing/:id/reviews",reviews);
+app.use("/listing",listingRoute);
+app.use("/listing/:id/reviews",reviewsRoute);
+app.use("/",userRoute);
 
 //Middleware --> Custom Error handler
 

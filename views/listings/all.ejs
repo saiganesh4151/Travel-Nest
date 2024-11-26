@@ -1,11 +1,6 @@
 <% layout("/layout/boilerplate.ejs") %>
 <body>
-    <%= success %>
-    <h2>All Lists</h2>
-
-    <form action="/listing/new" method="get">
-        <button>New List</button>
-    </form><br><br>
+    <h2 class="mt-3">All Lists</h2>
 
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 slower" style="gap: 1rem;">
         <% for(list of lists) { %> 
