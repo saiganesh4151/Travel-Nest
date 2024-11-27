@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV != "production")
+{
+    require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -75,7 +80,7 @@ async function main() {
 
 
 app.get('/', (req, res) => {
-    res.send("Home Route");
+    res.redirect('/listing');
 })
 
 // app.get('/listing', async (req,res)=>{
