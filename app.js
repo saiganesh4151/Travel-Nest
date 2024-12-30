@@ -11,11 +11,12 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session=require("express-session");
+const MongoStore = require('connect-mongo');
 const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy = require("passport-local");
 const User=require("./models/user");
-
+const dbUrl=process.env.ATLAS_DB;
 
 const Listing = require("./models/listing");
 const ExpressError = require("./utils/ExpressError");
@@ -27,8 +28,17 @@ const listingRoute=require("./router/listingg");
 const reviewsRoute=require("./router/review");
 const userRoute=require("./router/user");
 
+const store=MongoStore.create({
+    mongoUrl : dbUrl ,
+    crypto : {
+        secret : process.env.SECRET,
+    },
+    touchAfter : 24 * 3600
+});
+
 const sessionopt={
-    secret : "mysupersecretstring",
+    store,
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized : true,
     cookie :
@@ -61,6 +71,11 @@ app.use((req,res,next)=>{
     next();
 })
 
+app.get("/category/:type",async (req,res)=>{
+    let bodycategory=req.params.type;
+    let lists =await Listing.find({category : bodycategory});
+    res.render("./listings/filter.ejs",{lists , bodycategory});
+})
 
 //Database Connection
 main()
@@ -73,7 +88,7 @@ main()
 
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+    await mongoose.connect(dbUrl);
 }
 
 

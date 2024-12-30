@@ -1,43 +1,85 @@
 <% layout("/layout/boilerplate.ejs") %>
-<body>
-    <h2>Edit your Details</h2>
-    <div class="row">
-        <div class="col-8 offset-2">
-            <form action="/listing/<%=lists.id %>?_method=PUT" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="title" class="form-label fw-medium">Title</label>
-                    <input type="text" name="listing[title]"  value="<%=lists.title %>" class="form-control" id="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label fw-medium">Description</label>
-                    <input type="text" name="listing[description]" value="<%=lists.description %>" class="form-control" id="description" required>
-                </div>
-                <div class="mb-3">
-                    <label class="fw-medium">Original Image</label><br>
-                    <img src="<%=originalImageUrl %>" alt="">
-                </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label fw-medium">Upload New Image</label>
-                    <input type="file" name="listing[image]" class="form-control" id="image"> 
-                </div>
-               <div class="row">
-                <div class="mb-3 col-md-4">
-                    <label for="price" class="form-label fw-medium">Price</label>
-                    <input type="number" name="listing[price]" value="<%=lists.price %>" class="form-control" id="price" required>
-                </div>
-                <div class="mb-3 col-md-8">
-                    <label for="country" class="form-label fw-medium">Country</label>
-                    <input type="text" name="listing[country]" value="<%=lists.country %>" class="form-control" id="country" required>
-                </div>
-               </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label fw-medium">Location</label>
-                    <input type="text" name="listing[location]" value="<%=lists.location %>" class="form-control" id="location" required>
-                </div>
-                <button type="submit" class="btn btn-dark">Submit</button>
-            </form>
+
+  
+
+    <body>
+        <h2>Edit your Details</h2>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <form action="/listing/<%=lists.id %>?_method=PUT" method="post" novalidate class="needs-validation"
+                    enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-medium">Title</label>
+                        <input type="text" name="listing[title]" value="<%=lists.title %>" class="form-control"
+                            id="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-medium">Description</label>
+                        <input type="text" name="listing[description]" value="<%=lists.description %>"
+                            class="form-control" id="description" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-medium">Original Image</label><br>
+                        <img src="<%=originalImageUrl %>" alt="" class="rounded mx-auto d-block img-fluid">
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label fw-medium">Upload New Image</label>
+                        <input type="file" name="listing[image]" class="form-control " id="image">
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label fw-medium">Price</label>
+                            <input type="number" name="listing[price]" value="<%= lists.price %>" id="price"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a valid Price</div>
+                        </div>
+                        <div class=" mb-3 col-8">
+                            <label for="category" class="form-label fw-medium">Category</label>
+                            <select class="form-select form-control" aria-label="Default select example"
+                                name="listing[category]" required>
+                                <option value="<%=lists.category %>">
+                                    <%=lists.category %>
+                                </option>
+                                <option value="Trending">Trending</option>
+                                <option value="Rooms">Rooms</option>
+                                <option value="Iconic Cities">Iconic Cities</option>
+                                <option value="Mountains">Mountains</option>
+                                <option value="Castles">Castles</option>
+                                <option value="Amazing Pools">Amazing Pools</option>
+                                <option value="Camping">Camping</option>
+                                <option value="Farms">Farms</option>
+                                <option value="Arctic">Arctic</option>
+                                <option value="Beach">Beach</option>
+                                <option value="Golfing">Golfing</option>
+                                <option value="Skiing">Skiing</option>
+                                <option value="Boats">Boats</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="country" class="form-label fw-medium">Country</label>
+                            <input type="text" name="listing[country]" value="<%=lists.country %>" id="country"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a valid country name</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="location" class="form-label fw-medium">Location</label>
+                            <input type="text" name="listing[location]" value="<%=lists.location %>" id="location"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a valid Location</div>
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="tax" class="form-label fw-medium">Tax</label>
+                            <input type="number" name="listing[tax]" placeholder="Add GST" value="0" id="tax"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter GST</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </form>
+            </div>
         </div>
-    </div>
-    <br>
-    
-</body>
+        <br>
+
+    </body>

@@ -1,4 +1,9 @@
 <% layout("/layout/boilerplate.ejs") %>
+<script>
+    const mapToken="<%= process.env.MAP_TOKEN %>";
+    const coordinates=<%-JSON.stringify(lists.geometry.coordinates) %>;
+    const listing="<%-lists.title%>";
+</script>
 
         <div class="row">
             <div class="col-8 offset-2">
@@ -8,10 +13,13 @@
                 <div class="card mb-3">
                     <div class="row">
                         <div class="col-6 offset-3">
-                            <img src="<%= lists.image.url %>" class="card-img-top card-img-bottom" alt="Image">
+                            <img src="<%= lists.image.url %>" class="card-img-top card-img-bottom img-fluid custom-img" alt="Image">
                         </div>
                     </div>
                     <div class="card-body">
+                        <p class="card-text">
+                            <b><%= lists.category %></b>
+                        </p>
                         <p class="card-text">
                             Owned By <i>
                                 <%= lists.owner.username %>
@@ -26,6 +34,9 @@
                         </p>
                         <p class="card-text">
                             <%=lists.country %>
+                        </p>
+                        <p class="card-text">
+                            TAX : +<%=lists.tax %>%gst
                         </p>
                     </div>
                 </div>
@@ -114,7 +125,15 @@
                             </div>
                         </div>
                         <% } %>
-                        <!-- <div class="col-8 offset-2 mb-3 mt-3">
-                            <h3>Where you'll be</h3>
-                            <div id="map"></div>
-                        </div> -->
+
+<div class="row">
+    <div class="col-8 offset-2 mb-3 mt-3">
+        <h3>Where you'll be</h3>
+        <div id="map">
+        </div>
+    </div>
+</div>
+<script src="/js/map.js">
+</script>
+
+                        

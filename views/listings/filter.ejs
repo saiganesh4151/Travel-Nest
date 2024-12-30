@@ -1,0 +1,165 @@
+<% layout("/layout/boilerplate.ejs") %>
+<style>
+     #filters {
+            display: flex;
+            /* flex-wrap: wrap; */
+            overflow-y: hidden;
+        }
+
+        .filter {
+            margin-top: 1.2rem;
+            text-align: center;
+            margin-right: 2rem;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+        }
+
+        .filter:hover {
+            cursor: pointer;
+        }
+
+        #filters a {
+            color: black;
+            opacity: 0.6;
+            text-decoration: none;
+        }
+
+        #filters a:hover {
+            opacity: 1;
+        }
+
+        #toggle {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            border: 1px solid black;
+            border-radius: 0.5rem;
+            height: 3rem;
+            width: auto;
+            padding: 0px 0.7rem;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .pare {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .taxtoggle {
+            display: none;
+        }
+
+
+
+        /* Default Styles (Large Screens: 3 cards per row) */
+        .row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            /* Space between cards */
+            padding: 2rem;
+        }
+
+        .card {
+            width: 100%;
+            height: 19rem;
+            /* Fixed height */
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+
+        .card img {
+            width: 100%;
+            height: 15rem;
+            /* Adjust image height proportionally */
+            object-fit: cover;
+        }
+
+        .card-body {
+            margin-left:0px ;
+            flex-grow: 1;
+            /* text-align: center;   */
+        }
+
+        /* Medium Screens (2 cards per row) */
+       
+        @media (min-width : 643px )and (max-width: 958px) {
+            .row {
+                grid-template-columns: repeat(2, 1fr);
+                justify-content: center;
+            }
+            .card {
+                width: 6rem;
+                margin: 0 auto;
+            }
+        }
+        @media (min-width : 959px ) and (max-width: 1304px) {
+            .row {
+                grid-template-columns: repeat(3, 1fr);
+                justify-content: center;
+            }
+            .card {
+                width: 6rem;
+                margin: 0 auto;
+            }
+        }
+        @media (min-width: 1305px) {
+            .row {
+                grid-template-columns: repeat(4, 1fr);
+                justify-content: center;
+            }
+            .card {
+                height: 16rem;
+                width: 6rem;
+                margin: 0 auto;
+            }
+        }
+
+        /* Small Screens (1 card, 80% screen width) */
+        @media (max-width: 642px) {
+            .row {
+                grid-template-columns: 1fr;
+                /* Single column layout */
+                justify-content: center;
+                /* Center align card */
+            }
+
+            .card {
+                width: 90%;
+                margin: 0 auto;
+            }
+            #filters
+            {
+                margin: 1rem 3rem;
+            }
+            .form-switch label{
+                font-size: 12px;
+            }
+        }
+</style>
+<br>
+<h3><%= bodycategory %></h3>
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 slower" style="gap: 1rem;">
+    <% for(list of lists) { %> 
+    <a href="/listing/<%=list._id %>">
+        <div class="card col listing-card" style="width: 19rem; height: 20rem;">
+            <img src="<%=list.image.url %>" class="card-img-top card-img-bottom rounded-4" alt="listing image">
+            <div class="card-img-overlay">abc</div>
+            <div class="card-body">
+                <a href="/listing/<%=list.id %>"> <%=list.title %></a>
+                <p>&#8377;<%=list.price %>/Night</p>
+                <p><%=list.location %>,<%=list.country %></p>
+            </div>
+          </div>
+    </a>
+     <% } %>
+</div>

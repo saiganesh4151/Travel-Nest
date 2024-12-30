@@ -1,7 +1,7 @@
 const Listing = require("../models/listing");
-// const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
-// const maptoken=process.env.MAP_TOKEN;
-// const geocodingClient=mbxGeocoding({ accessToken : maptoken});
+const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken=process.env.MAP_TOKEN;
+const geocodingClient=mbxGeocoding({ accessToken : mapToken});
 // link for forward and backward geocoding --> https://github.com/mapbox/mapbox-sdk-js/blob/main/docs/services.md#forwardgeocode-1
 
 
@@ -44,11 +44,11 @@ module.exports.createListing = async (req, res) => {
     //     throw new ExpressError(400, "Error: Price must be a valid number.");
     // }
 
-    // let response= await geocodingClient.forwardGeocode({
-    //     query : "New Delhi, India",
-    //     limit : 1
-    // }).send();
-
+    let response= await geocodingClient.forwardGeocode({
+        query : req.body.listing.location,
+        limit : 1
+    }).send();
+    // console.log(listing.location);
     // console.log(response.body.features[0].geometry); // To find the coordinates we use this ..
 
 
@@ -58,10 +58,11 @@ module.exports.createListing = async (req, res) => {
     let url=req.file.path;
     let filename = req.file.filename;
     let list = new Listing(req.body.listing);
-    list.owner = res.locals.currUser;
+    list.owner = req.user;
     list.image= { url , filename};
+    // console.log(list);
 
-    // list.geometry=response.body.features[0].geometry;
+    list.geometry=response.body.features[0].geometry;
 
     await list.save();
     req.flash("success", "New Listing Created");
@@ -76,7 +77,13 @@ module.exports.editListingForm = async (req, res) => {
         req.flash("error", "Listing does not exist !");
         return res.redirect('/listing');
     }
-
+    // let response= await geocodingClient.forwardGeocode({
+    //     query : req.body.listing.location,
+    //     limit : 1
+    // }).send();
+    // lists.geometry=response.body.features[0].geometry;
+    // console.log(lists.location);
+    // console.log(lists.geometry);
     let originalImageUrl = lists.image.url;
     originalImageUrl = originalImageUrl.replace("/upload","/upload/h_200,w_250");
     res.render('./listings/edit.ejs', { lists , originalImageUrl})
@@ -87,15 +94,23 @@ module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    // console.log(req.body.listing.location);
+    let response= await geocodingClient.forwardGeocode({
+        query : req.body.listing.location,
+        limit : 1
+    }).send();
+    listing.geometry=response.body.features[0].geometry;
+    // console.log(listing.geometry);
     if(typeof req.file != undefined && req.file)
-    {
-        let url=req.file.path;
-        let filename=req.file.filename;
-        listing.image ={ url , filename};
-        await listing.save();
-    }
+        {
+            let url=req.file.path;
+            let filename=req.file.filename;
+            listing.image ={ url , filename};
+            await listing.save();
+        }
     req.flash("success", "Listing Updated");
-    res.redirect(`/listing/${id}`);
+    // res.redirect(`/listing/${id}`);
+    res.render("./listings/show.ejs",{lists : listing});
 };
 
 module.exports.deleteListing = async (req, res) => {

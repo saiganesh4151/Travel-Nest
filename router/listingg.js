@@ -44,4 +44,5 @@ router.put('/:id',isLogged ,isOwner,upload.single("listing[image]"), validateLis
 //Delete Route
 router.delete('/:id', isLogged ,isOwner,wrapAsync(listingController.deleteListing));
 
+
 module.exports=router;
